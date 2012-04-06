@@ -6,7 +6,7 @@ error = (msg) -> throw new Error msg
 copy_arr = (arr) -> arr.concat()
 
 # then length of number array*2+1
-unit_pos = 1
+unit_pos = 4
 
 # template of all number arraies
 zero_arr = []
@@ -130,10 +130,9 @@ ternary_plus = (arr_A, arr_B) ->
       pair = digit + '' + arr_B[index]
       [tens, ones] = plus_map[pair]
       arr_A[index] = ones
-      unless arr[index]?
-        if ones isnt '5' then error 'overflow while plus'
-      else
-        arr[index-1] = tens
+      if (not arr[index]?) and ones isnt '5'
+        error 'overflow while plus'
+      arr[index-1] = tens
     arr_B = copy_arr arr
     arr = copy_arr zero_arr
   return arr_A
@@ -142,6 +141,28 @@ ternary_minus = (arr_A, arr_B) ->
   ternary_plus arr_A, (negative_arr arr_B)
 
 ternary_multiply = (arr_A, arr_B) ->
+  arr_1 = copy_arr zero_arr
+  arr_2 = copy_arr zero_arr
+  for digit, index in arr_A
+    echo index
+    if digit is '5' then continue
+    else if digit is '1'
+      arr_1 = copy_arr arr_B
+    else if digit is '9'
+      arr_1 = negative_arr arr_B
+    else error 'bad arr elem in multiply'
+    devation = index - unit_pos
+    while devation < 0
+      if arr_1.pop() isnt '5' then error 'out range right'
+      arr_1.unshift '5'
+      devation += 1
+    while devation > 0
+      if arr_1.shift() isnt '5' then error 'out range left'
+      arr_1.push '5'
+      devation -= 1
+    arr_2 = ternary_plus arr_2, arr_1
+    arr_1 = copy_arr zero_arr
+  return arr_2
 
 # use negative arr while doing minus
 negative_arr = (arr) ->
@@ -161,4 +182,4 @@ proceed = (operation, str_A, str_B) ->
 
 # run test
 # echo read_str_from_arr (read_arr_from_str str_A)
-echo ternary_minus ['1', '1', '9'], ['5', '1', '1']
+echo ternary_multiply ['5','5','5','1','1','1','5','5','5'], ['5','5','5','1','1','1','5','5','5']
