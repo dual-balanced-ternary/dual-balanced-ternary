@@ -130,14 +130,27 @@ ternary_plus = (arr_A, arr_B) ->
       pair = digit + '' + arr_B[index]
       [tens, ones] = plus_map[pair]
       arr_A[index] = ones
-      if index < 1
+      unless arr[index]?
         if ones isnt '5' then error 'overflow while plus'
       else
         arr[index-1] = tens
-      arr_B = copy_arr arr
-      arr = copy_arr zero_arr
+    arr_B = copy_arr arr
+    arr = copy_arr zero_arr
   return arr_A
 
+ternary_minus = (arr_A, arr_B) ->
+  ternary_plus arr_A, (negative_arr arr_B)
+
+ternary_multiply = (arr_A, arr_B) ->
+
+# use negative arr while doing minus
+negative_arr = (arr) ->
+  arr.map (x) ->
+    switch x
+      when '1' then return '9'
+      when '9' then return '1'
+      when '5' then return '5'
+      else error 'bad digit'
 
 # the way to connect the whole programe
 proceed = (operation, str_A, str_B) ->
@@ -148,4 +161,4 @@ proceed = (operation, str_A, str_B) ->
 
 # run test
 # echo read_str_from_arr (read_arr_from_str str_A)
-echo ternary_plus ['5', '1', '9'], ['5', '5', '5']
+echo ternary_minus ['1', '1', '9'], ['5', '1', '1']
