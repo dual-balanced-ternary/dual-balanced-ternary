@@ -6,7 +6,7 @@ error = (msg) -> throw new Error msg
 copy_arr = (arr) -> arr.concat()
 
 # then length of number array*2+1
-unit_pos = 7
+unit_pos = 1
 
 # template of all number arraies
 zero_arr = []
@@ -98,6 +98,47 @@ digit_map =
   '9': '95'
   '95': '9'
 
+# map used for plus and multiply in balanced ternary
+plus_map =
+  '11': '19'
+  '15': '51'
+  '19': '55'
+  '51': '51'
+  '55': '55'
+  '59': '59'
+  '91': '55'
+  '95': '59'
+  '99': '91'
+
+multiply_map =
+  '11': '1'
+  '15': '5'
+  '19': '9'
+  '51': '5'
+  '55': '5'
+  '59': '5'
+  '91': '9'
+  '95': '5'
+  '99': '1'
+
+# plus of ternary in array
+ternary_plus = (arr_A, arr_B) ->
+  zero_str = zero_arr.join ''
+  arr = copy_arr zero_arr
+  while (arr_B.join '') isnt zero_str
+    for digit, index in arr_A
+      pair = digit + '' + arr_B[index]
+      [tens, ones] = plus_map[pair]
+      arr_A[index] = ones
+      if index < 1
+        if ones isnt '5' then error 'overflow while plus'
+      else
+        arr[index-1] = tens
+      arr_B = copy_arr arr
+      arr = copy_arr zero_arr
+  return arr_A
+
+
 # the way to connect the whole programe
 proceed = (operation, str_A, str_B) ->
   arr_A = read_arr_from_str str_A
@@ -106,4 +147,5 @@ proceed = (operation, str_A, str_B) ->
   read_str_from_arr result
 
 # run test
-echo read_str_from_arr (read_arr_from_str str_A)
+# echo read_str_from_arr (read_arr_from_str str_A)
+echo ternary_plus ['5', '1', '9'], ['5', '5', '5']
