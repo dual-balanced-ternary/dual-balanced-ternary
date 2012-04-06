@@ -6,11 +6,12 @@ error = (msg) -> throw new Error msg
 copy_arr = (arr) -> arr.concat()
 
 # then length of number array*2+1
-unit_pos = 4
+unit_pos = 3
 
 # template of all number arraies
 zero_arr = []
 zero_arr.push '5' for i in [1..unit_pos*2+1]
+zero_str = zero_arr.join ''
 
 # use these initial strings to test this programe
 str_A = '433446&344'
@@ -123,14 +124,15 @@ multiply_map =
 
 # plus of ternary in array
 ternary_plus = (arr_A, arr_B) ->
-  zero_str = zero_arr.join ''
+  echo arr_A
+  echo arr_B
   arr = copy_arr zero_arr
   while (arr_B.join '') isnt zero_str
     for digit, index in arr_A
       pair = digit + '' + arr_B[index]
       [tens, ones] = plus_map[pair]
       arr_A[index] = ones
-      if (not arr[index]?) and ones isnt '5'
+      if (not arr[index-1]?) and tens isnt '5'
         error 'overflow while plus'
       arr[index-1] = tens
     arr_B = copy_arr arr
@@ -164,6 +166,34 @@ ternary_multiply = (arr_A, arr_B) ->
     arr_1 = copy_arr zero_arr
   return arr_2
 
+ternary_divide = (arr_A, arr_B) ->
+  arr_1 = copy_arr zero_arr
+  for item_1, index_1 in arr_1
+    arr_2 = copy_arr zero_arr
+    jump_loop = no
+    for item_2, index_2 in arr_B
+      point = index_1 + index_2 - unit_pos
+      if not arr_2[point]?
+        if item_2 isnt '5'
+          jump_loop = yes
+          continue
+      if arr_2[point]?
+        arr_2[point] = arr_B[index_2]
+    if jump_loop then continue
+    digit = '5'
+    left = copy_arr arr_A
+    left_1 = ternary_minus arr_A, arr_2
+    left_9 = ternary_plus arr_A, arr_2
+    if smaller_arr left_1, left
+      digit = '1'
+      left = copy_arr left_1
+    if smaller_arr left_9, left
+      digit = '9'
+      left = copy_arr left_9
+    arr_A = copy_arr left
+    arr_1[index_1] = digit
+  arr_1
+
 # use negative arr while doing minus
 negative_arr = (arr) ->
   arr.map (x) ->
@@ -172,6 +202,12 @@ negative_arr = (arr) ->
       when '9' then return '1'
       when '5' then return '5'
       else error 'bad digit'
+
+# will be used to choose the closest quotient
+smaller_arr = (arr_A, arr_B) ->
+  for digit, index in arr_A
+    if digit >= arr_B then return false
+  return true
 
 # the way to connect the whole programe
 proceed = (operation, str_A, str_B) ->
@@ -182,4 +218,4 @@ proceed = (operation, str_A, str_B) ->
 
 # run test
 # echo read_str_from_arr (read_arr_from_str str_A)
-echo ternary_multiply ['5','5','5','1','1','1','5','5','5'], ['5','5','5','1','1','1','5','5','5']
+echo ternary_divide ['5','5','1','1','1','5','5'], ['5','5','1','1','1','5','5']
