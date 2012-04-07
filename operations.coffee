@@ -6,7 +6,7 @@ error = (msg) -> throw new Error msg
 copy_arr = (arr) -> arr.concat()
 
 # then length of number array*2+1
-unit_pos = 10
+unit_pos = 20
 
 # template of all number arraies
 zero_arr = []
@@ -277,6 +277,29 @@ smaller_arr = (arr_A, arr_B) ->
     if digit < arr_B[index] then return false
   return true
 
+# map decimal to ternary
+decimal_ternary_map =
+  "0": "&"
+  "1": "1&"
+  "2": "19&"
+  "3": "15&"
+  "4": "11&"
+  "5": "199&"
+  "6": "195&"
+  "7": "191&"
+  "8": "159&"
+  "9": "155&"
+  "10": "151&"
+  '1&': [ 1, 0]
+  '2&': [-1, -1]
+  '3&': [ 0, 1]
+  '4&': [-1, 1]
+  '5&': [ 0, 0]
+  '6&': [ 1,-1]
+  '7&': [ 0,-1]
+  '8&': [ 1, 1]
+  '9&': [-1, 0]
+
 # the way to connect the whole programe
 proceed = (operation, str_A, str_B) ->
   [arr_Ax, arr_Ay] = read_arr_from_str str_A
@@ -289,4 +312,85 @@ proceed = (operation, str_A, str_B) ->
 # run test
 # echo read_str_from_arr (read_arr_from_str str_A)
 # echo ternary_divide ['5','5','1','1','1','5','5'], ['5','1','9','5','5','5','5']
-echo proceed '%', str_A, str_B
+# echo proceed '%', str_A, str_B
+
+# translation between decimal and ternary
+decimal_to_ternary = (x, y) ->
+  x_negative = no
+  y_negative = no
+  if x < 0
+    x_negative = on
+    x = -x
+  if y < 0
+    y_negative = on
+    y = -y
+  x = String x
+  y = String y
+  ternary_x = '&'
+  ternary_y = '&'
+  find_x = x.match /^(\d+)(\.(\d+))?$/
+  if find_x?
+    if not find_x[3] then find_x[3] = ''
+    int_arr = find_x[1].split ''
+    fra_arr = find_x[3].split ''
+    base = '1&'
+    while int_arr.length > 0
+      number = decimal_ternary_map[int_arr.pop()]
+      number = proceed '*', number, base
+      ternary_x = proceed '+', number, ternary_x
+      base = proceed '*', base, '151&'
+    base = proceed '/', '1&', '151&'
+    while fra_arr.length > 0
+      number = decimal_ternary_map[fra_arr.shift()]
+      number = proceed '+', number, ternary_x
+      ternary_x = proceed '+', number, ternary_x
+  else error 'bad x number string'
+  find_y = y.match /^(\d+)(\.(\d+))?$/
+  if find_y?
+    if not find_y[3] then find_y[3] = ''
+    int_arr = find_y[1].split ''
+    fra_arr = find_y[3].split ''
+    base = '1&'
+    while int_arr.length > 0
+      number = decimal_ternary_map[int_arr.pop()]
+      number = proceed '*', number, base
+      ternary_y = proceed '+', number, ternary_y
+      base = proceed '*', base, '151&'
+    base = proceed '/', '1&', '151&'
+    while fra_arr.length > 0
+      number = decimal_ternary_map[fra_arr.shift()]
+      number = proceed '+', number, ternary_y
+      ternary_y = proceed '+', number, ternary_y
+      base = proceed '/', base, '151&'
+  else error 'bad y number string'
+  if x_negative then ternary_x = proceed '-', '&', ternary_x
+  if y_negative then ternary_y = proceed '-', '&', ternary_y
+  ternary_y = proceed '*', '3&', ternary_y
+  return proceed '+', ternary_x, ternary_y
+
+ternary_to_decimal = (ternary_str) ->
+  find_number = ternary_str.match /^([1-9]*)&([1-9]*)$/
+  if find_number?
+    integral_part = find_number[1]
+    fraction_part = find_number[2]
+    pos_x = 0
+    pos_y = 0
+    unit = 1
+    int_arr = integral_part.split ''
+    fra_arr = fraction_part.split ''
+    while int_arr.length > 0
+      [x, y] = decimal_ternary_map[int_arr.pop()+'&']
+      pos_x += x * unit
+      pos_y += y * unit
+      unit *= 3
+    unit = 1 / 3
+    while fra_arr.length > 0
+      [x, y] = decimal_ternary_map[fra_arr.shift()+'&']
+      pos_x += x * unit
+      pos_y += y * unit
+      unit /= 3
+    return [pos_x, pos_y]
+  else error 'bad ternary_str to translate'
+
+[a, b] = ternary_to_decimal '888&'
+echo decimal_to_ternary a, b
