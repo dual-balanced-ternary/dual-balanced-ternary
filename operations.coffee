@@ -6,7 +6,7 @@ error = (msg) -> throw new Error msg
 copy_arr = (arr) -> arr.concat()
 
 # then length of number array*2+1
-unit_pos = 8
+unit_pos = 10
 
 # template of all number arraies
 zero_arr = []
@@ -14,8 +14,8 @@ zero_arr.push '5' for i in [1..unit_pos*2+1]
 zero_str = zero_arr.join ''
 
 # use these initial strings to test this programe
-str_A = '411&'
-str_B = '1&'
+str_A = '436&'
+str_B = '43&'
 
 # a varable to declare operation
 operation = '+'
@@ -191,11 +191,14 @@ ternary_multiply = (arr_A, arr_B) ->
   return arr_2
 
 ternary_divide = (arr_A, arr_B) ->
-  echo arr_A.join ''
-  echo arr_B.join ''
   arr_1 = copy_arr zero_arr
-  space_A = arr_A.join('').match(/^\s*/).length
-  space_B = arr_B.join('').match(/^\s*/).length
+  if (arr_A.join '') is zero_str
+    echo 'zero!'
+    return arr_A
+  # echo 'A is: ', (arr_A.join '')
+  # echo 'B is: ', (arr_B.join '')
+  space_A = arr_A.join('').match(/^(5*)/)[1].length
+  space_B = arr_B.join('').match(/^(5*)/)[1].length
   distance = space_B - space_A
   jump = unit_pos - distance - 2
   if distance < 0 then distance = -distance
@@ -209,7 +212,7 @@ ternary_divide = (arr_A, arr_B) ->
       if not arr_2[point]?
         if item_2 isnt '5'
           jump_loop = yes
-          continue
+          break
       if arr_2[point]?
         arr_2[point] = arr_B[index_2]
     if jump_loop then continue
@@ -225,9 +228,8 @@ ternary_divide = (arr_A, arr_B) ->
       left = copy_arr left_9
     arr_A = copy_arr left
     arr_1[index_1] = digit
-
-  echo arr_1.join ''
-  echo '\n'
+  
+  # echo 'r is: ', arr_1.join ''
   return arr_1
 
 # use negative arr while doing minus
@@ -241,22 +243,26 @@ negative_arr = (arr) ->
 
 # will be used to choose the closest quotient
 smaller_arr = (arr_A, arr_B) ->
+  # echo 'sm: ', arr_A.join ''
+  # echo 'sm: ', arr_B.join ''
+  head_files_1 = (arr_A.join '').match(/^(5*)/)[1].length
+  head_files_2 = (arr_B.join '').match(/^(5*)/)[1].length
+  if head_files_2 > head_files_1 then return false
+  if head_files_2 < head_files_1 then return true
   test = copy_arr arr_A
   while test[0]?
     head = test.shift()
     if head is '5' then continue
     if head is '9'
       arr_A = negative_arr arr_A
-      break
-    if head is '1' then break
+    break
   test = copy_arr arr_B
   while test[0]?
     head = test.shift()
     if head is '5' then continue
     if head is '9'
       arr_B = negative_arr arr_B
-      break
-    if head is '1' then break
+    break
   for digit, index in arr_A
     if digit is arr_B[index] then continue
     if digit < arr_B[index] then return false
@@ -267,6 +273,8 @@ proceed = (operation, str_A, str_B) ->
   [arr_Ax, arr_Ay] = read_arr_from_str str_A
   [arr_Bx, arr_By] = read_arr_from_str str_B
   result = run_in_arr[operation] arr_Ax, arr_Ay, arr_Bx, arr_By
+  # echo result[0].join '_'
+  # echo result[1].join '_'
   read_str_from_arr result
 
 # run test
