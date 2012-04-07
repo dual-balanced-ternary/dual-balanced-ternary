@@ -6,7 +6,7 @@ error = (msg) -> throw new Error msg
 copy_arr = (arr) -> arr.concat()
 
 # then length of number array*2+1
-unit_pos = 20
+unit_pos = 100
 
 # template of all number arraies
 zero_arr = []
@@ -203,7 +203,7 @@ ternary_multiply = (arr_A, arr_B) ->
 ternary_divide = (arr_A, arr_B) ->
   arr_1 = copy_arr zero_arr
   if (arr_A.join '') is zero_str
-    echo 'zero!'
+    # echo 'zero!'
     return arr_A
   # echo 'A is: ', (arr_A.join '')
   # echo 'B is: ', (arr_B.join '')

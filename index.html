@@ -1,0 +1,41 @@
+
+<html>
+<head>
+  <title>Calculator</title>
+  <meta charset='utf-8'/>
+  <script type="text/coffeescript" src='operations.coffee'></script>
+  <script type="text/coffeescript" src='page.coffee'></script>
+  <script type="text/javascript" src='http://docview.cnodejs.net/libs/coffee-script.js?js'></script>
+  <style type="text/css">
+    body{
+      background-color: hsl(340,10%,10%);
+      color: hsl(260,96%,96%);
+      font-family: Wenquanyi Micro Hei Mono, Monospace;
+      font-size: 14px;
+    }
+    #write{
+      width: 800px;
+    }
+    #input{
+      width: 800px;
+      height: 40px;
+      resize: none;
+      background-color: hsl(340,10%,10%);
+      color: hsl(260,96%,96%);
+      border-width: 0px;
+      font-family: Wenquanyi Micro Hei Mono, Monospace;
+      font-size: 14px;
+    }
+    .error{
+      color: red;
+    }
+    .result{
+      color: hsl(240,80%,80%);
+    }
+  </style>
+</head>
+<body>
+  <div id='write'>put you code below<br></div>
+  <textarea id='input'></textarea>
+</body>
+</html>
