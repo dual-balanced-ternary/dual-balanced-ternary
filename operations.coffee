@@ -62,6 +62,7 @@ run_in_arr =
       if index > unit_pos
         arr[index] = '5'
       else arr[index] = digit
+    arr
 
 # use array to calculate, translate back and forth
 read_arr_from_str = (str) ->
@@ -392,5 +393,46 @@ ternary_to_decimal = (ternary_str) ->
     return [pos_x, pos_y]
   else error 'bad ternary_str to translate'
 
-[a, b] = ternary_to_decimal '888&'
-echo decimal_to_ternary a, b
+# [a, b] = ternary_to_decimal '888&'
+# echo decimal_to_ternary a, b
+
+# export ads libs
+if exports?
+  exports['+'] = (str_A, str_B) ->
+    proceed '+', str_A, str_B
+  exports['-'] = (str_A, str_B) ->
+    proceed '-', str_A, str_B
+  exports['*'] = (str_A, str_B) ->
+    proceed '*', str_A, str_B
+  exports['/'] = (str_A, str_B) ->
+    proceed '/', str_A, str_B
+  exports['\\'] = (str_A, str_B) ->
+    proceed '\\', str_A, str_B
+  exports['%'] = (str_A, str_B) ->
+    proceed '%', str_A, str_B
+  exports['@'] = (str) ->
+    arr = read_arr_from_str str
+    arr = arr.map run_in_arr['@']
+    read_str_from_arr arr
+  exports.decimal_to_ternary = decimal_to_ternary
+  exports.ternary_to_decimal = ternary_to_decimal
+
+if window?
+  window['+'] = (str_A, str_B) ->
+    proceed '+', str_A, str_B
+  window['-'] = (str_A, str_B) ->
+    proceed '-', str_A, str_B
+  window['*'] = (str_A, str_B) ->
+    proceed '*', str_A, str_B
+  window['/'] = (str_A, str_B) ->
+    proceed '/', str_A, str_B
+  window['\\'] = (str_A, str_B) ->
+    proceed '\\', str_A, str_B
+  window['%'] = (str_A, str_B) ->
+    proceed '%', str_A, str_B
+  window['@'] = (str) ->
+    arr = read_arr_from_str str
+    arr = run_in_arr['@'] arr
+    read_str_from_arr arr
+  window.decimal_to_ternary = decimal_to_ternary
+  window.ternary_to_decimal = ternary_to_decimal
