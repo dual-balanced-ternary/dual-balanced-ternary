@@ -14,8 +14,8 @@ zero_arr.push '5' for i in [1..unit_pos*2+1]
 zero_str = zero_arr.join ''
 
 # use these initial strings to test this programe
-str_A = '&11'
-str_B = '&11'
+str_A = '411&'
+str_B = '1&'
 
 # a varable to declare operation
 operation = '+'
@@ -39,6 +39,18 @@ run_in_arr =
     arr_y = ternary_plus arr_y1, arr_y2
     return [arr_x, arr_y]
   '/': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
+    arr_x1 = ternary_multiply arr_Ax, arr_Bx
+    arr_x2 = ternary_multiply arr_Ay, arr_By
+    arr_x = ternary_plus arr_x1, arr_x2
+    arr_y1 = ternary_multiply arr_Ay, arr_Bx
+    arr_y2 = ternary_multiply arr_Ax, arr_By
+    arr_y = ternary_minus arr_y1, arr_y2
+    divisor_1 = ternary_multiply arr_Bx, arr_Bx
+    divisor_2 = ternary_multiply arr_By, arr_By
+    divisor = ternary_plus divisor_1, divisor_2
+    arr_x = ternary_divide arr_x, divisor
+    arr_y = ternary_divide arr_y, divisor
+    return [arr_x, arr_y]
   '%': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
   '@': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
 
@@ -179,11 +191,13 @@ ternary_multiply = (arr_A, arr_B) ->
   return arr_2
 
 ternary_divide = (arr_A, arr_B) ->
+  echo arr_A.join ''
+  echo arr_B.join ''
   arr_1 = copy_arr zero_arr
   space_A = arr_A.join('').match(/^\s*/).length
   space_B = arr_B.join('').match(/^\s*/).length
   distance = space_B - space_A
-  jump = unit_pos - distance - 1
+  jump = unit_pos - distance - 2
   if distance < 0 then distance = -distance
   if unit_pos - distance < 1 then error 'our range dvision'
   for item_1, index_1 in arr_1
@@ -211,7 +225,10 @@ ternary_divide = (arr_A, arr_B) ->
       left = copy_arr left_9
     arr_A = copy_arr left
     arr_1[index_1] = digit
-  arr_1
+
+  echo arr_1.join ''
+  echo '\n'
+  return arr_1
 
 # use negative arr while doing minus
 negative_arr = (arr) ->
@@ -255,4 +272,4 @@ proceed = (operation, str_A, str_B) ->
 # run test
 # echo read_str_from_arr (read_arr_from_str str_A)
 # echo ternary_divide ['5','5','1','1','1','5','5'], ['5','1','9','5','5','5','5']
-echo proceed '*', str_A, str_B
+echo proceed '/', str_A, str_B
