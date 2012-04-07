@@ -6,7 +6,7 @@ error = (msg) -> throw new Error msg
 copy_arr = (arr) -> arr.concat()
 
 # then length of number array*2+1
-unit_pos = 3
+unit_pos = 8
 
 # template of all number arraies
 zero_arr = []
@@ -14,27 +14,40 @@ zero_arr.push '5' for i in [1..unit_pos*2+1]
 zero_str = zero_arr.join ''
 
 # use these initial strings to test this programe
-str_A = '433446&344'
-str_B = '45345&'
+str_A = '&11'
+str_B = '&11'
 
 # a varable to declare operation
 operation = '+'
 
 # define the procedures needed to calculate
 run_in_arr =
-  '+': (arr_A, arr_B) -> []
-  '-': (arr_A, arr_B) -> []
-  '*': (arr_A, arr_B) -> []
-  '/': (arr_A, arr_B) -> []
-  '%': (arr_A, arr_B) -> []
-  '@': (arr_A, arr_B) -> []
+  '+': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
+    arr_x = ternary_plus arr_Ax, arr_Bx
+    arr_y = ternary_plus arr_Ay, arr_By
+    return [arr_x, arr_y]
+  '-': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
+    arr_x = ternary_minus arr_Ax, arr_Bx
+    arr_y = ternary_minus arr_Ay, arr_By
+    return [arr_x, arr_y]
+  '*': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
+    arr_x1 = ternary_multiply arr_Ax, arr_Bx
+    arr_x2 = ternary_multiply arr_Ay, arr_By
+    arr_x = ternary_minus arr_x1, arr_x2
+    arr_y1 = ternary_multiply arr_Ax, arr_By
+    arr_y2 = ternary_multiply arr_Ay, arr_Bx
+    arr_y = ternary_plus arr_y1, arr_y2
+    return [arr_x, arr_y]
+  '/': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
+  '%': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
+  '@': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
 
 # use array to calculate, translate back and forth
 read_arr_from_str = (str) ->
   str = str[1..] while str[0] is '5'
   str = str[...-1] while str[-1..-1][0] is '5'
 
-  find_number = str.match /^([1-9]+)&([1-9]+)$/
+  find_number = str.match /^([1-9]*)&([1-9]*)$/
   if find_number?
     arr = copy_arr zero_arr
     integral_part = find_number[1].split ''
@@ -154,12 +167,12 @@ ternary_multiply = (arr_A, arr_B) ->
     else error 'bad arr elem in multiply'
     devation = index - unit_pos
     while devation < 0
-      if arr_1.pop() isnt '5' then error 'out range right'
-      arr_1.unshift '5'
+      if arr_1.shift() isnt '5' then error 'out range right'
+      arr_1.push '5'
       devation += 1
     while devation > 0
-      if arr_1.shift() isnt '5' then error 'out range left'
-      arr_1.push '5'
+      if arr_1.pop() isnt '5' then error 'out range left'
+      arr_1.unshift '5'
       devation -= 1
     arr_2 = ternary_plus arr_2, arr_1
     arr_1 = copy_arr zero_arr
@@ -234,11 +247,12 @@ smaller_arr = (arr_A, arr_B) ->
 
 # the way to connect the whole programe
 proceed = (operation, str_A, str_B) ->
-  arr_A = read_arr_from_str str_A
-  arr_B = read_arr_from_str str_B
-  result = run_in_arr[operation] arr_A, arr_B
+  [arr_Ax, arr_Ay] = read_arr_from_str str_A
+  [arr_Bx, arr_By] = read_arr_from_str str_B
+  result = run_in_arr[operation] arr_Ax, arr_Ay, arr_Bx, arr_By
   read_str_from_arr result
 
 # run test
 # echo read_str_from_arr (read_arr_from_str str_A)
-echo ternary_divide ['5','5','1','1','1','5','5'], ['5','1','9','5','5','5','5']
+# echo ternary_divide ['5','5','1','1','1','5','5'], ['5','1','9','5','5','5','5']
+echo proceed '*', str_A, str_B
