@@ -124,8 +124,8 @@ multiply_map =
 
 # plus of ternary in array
 ternary_plus = (arr_A, arr_B) ->
-  echo arr_A
-  echo arr_B
+  arr_A = arr_A.concat()
+  arr_B = arr_B.concat()
   arr = copy_arr zero_arr
   while (arr_B.join '') isnt zero_str
     for digit, index in arr_A
@@ -146,7 +146,6 @@ ternary_multiply = (arr_A, arr_B) ->
   arr_1 = copy_arr zero_arr
   arr_2 = copy_arr zero_arr
   for digit, index in arr_A
-    echo index
     if digit is '5' then continue
     else if digit is '1'
       arr_1 = copy_arr arr_B
@@ -168,7 +167,14 @@ ternary_multiply = (arr_A, arr_B) ->
 
 ternary_divide = (arr_A, arr_B) ->
   arr_1 = copy_arr zero_arr
+  space_A = arr_A.join('').match(/^\s*/).length
+  space_B = arr_B.join('').match(/^\s*/).length
+  distance = space_B - space_A
+  jump = unit_pos - distance - 1
+  if distance < 0 then distance = -distance
+  if unit_pos - distance < 1 then error 'our range dvision'
   for item_1, index_1 in arr_1
+    if index_1 < jump then continue
     arr_2 = copy_arr zero_arr
     jump_loop = no
     for item_2, index_2 in arr_B
@@ -205,8 +211,25 @@ negative_arr = (arr) ->
 
 # will be used to choose the closest quotient
 smaller_arr = (arr_A, arr_B) ->
+  test = copy_arr arr_A
+  while test[0]?
+    head = test.shift()
+    if head is '5' then continue
+    if head is '9'
+      arr_A = negative_arr arr_A
+      break
+    if head is '1' then break
+  test = copy_arr arr_B
+  while test[0]?
+    head = test.shift()
+    if head is '5' then continue
+    if head is '9'
+      arr_B = negative_arr arr_B
+      break
+    if head is '1' then break
   for digit, index in arr_A
-    if digit >= arr_B then return false
+    if digit is arr_B[index] then continue
+    if digit < arr_B[index] then return false
   return true
 
 # the way to connect the whole programe
@@ -218,4 +241,4 @@ proceed = (operation, str_A, str_B) ->
 
 # run test
 # echo read_str_from_arr (read_arr_from_str str_A)
-echo ternary_divide ['5','5','1','1','1','5','5'], ['5','5','1','1','1','5','5']
+echo ternary_divide ['5','5','1','1','1','5','5'], ['5','1','9','5','5','5','5']
