@@ -51,8 +51,17 @@ run_in_arr =
     arr_x = ternary_divide arr_x, divisor
     arr_y = ternary_divide arr_y, divisor
     return [arr_x, arr_y]
+  '\\': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
+    (@['/'] arr_Ax, arr_Ay, arr_Bx, arr_By).map @['@']
   '%': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
-  '@': (arr_Ax, arr_Ay, arr_Bx, arr_By) ->
+    [Ax, Ay] = @['\\'] arr_Ax, arr_Ay, arr_Bx, arr_By
+    [Bx, By] = @['*'] Ax, Ay, arr_Bx, arr_By
+    @['-'] arr_Ax, arr_Ay, Bx, By
+  '@': (arr) ->
+    for digit, index in arr
+      if index > unit_pos
+        arr[index] = '5'
+      else arr[index] = digit
 
 # use array to calculate, translate back and forth
 read_arr_from_str = (str) ->
@@ -280,4 +289,4 @@ proceed = (operation, str_A, str_B) ->
 # run test
 # echo read_str_from_arr (read_arr_from_str str_A)
 # echo ternary_divide ['5','5','1','1','1','5','5'], ['5','1','9','5','5','5','5']
-echo proceed '/', str_A, str_B
+echo proceed '%', str_A, str_B
