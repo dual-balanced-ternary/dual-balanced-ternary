@@ -4,24 +4,24 @@ Double balanced ternary calculator
 
 **explanation**  
 
-it's more or less a wrapper of complex numbers, that's all  
 jump my shoddy English docs if reads Chinese...  
+it's more or less a wrapper of complex numbers, that's all about it  
 visiting the live version is a good idea, hope it won't crash:  
 <http://docview.cnodejs.net/projects/ternary/ternary-calculator/index.html?html>  
 
-the `&` mark in number is nessesary, `&` even represents '5&5'.  
-calculator takes input string in somthing like S-exression wrapped with '[]'.  
-or you may import the methods to a script and then run it.  
+the `&` mark in a number is nessesary, `&` also represents '5&5'.  
+the calculator takes in string in a string in S-exression but wrapped with '[]'.  
+or you may import the methods in a script and then run it.  
 I didn't test the methods throughly, but seems fine by now.  
 
 usage  
 --
 
-I wrote it on CoffeeScript, you kown that if you have written coffee..  
-`ternary = require './operations'`,
+it's CoffeeScript. you mao kown what to do if you know coffee..  
+`ternary = require './operations'` while in the same directory.  
 or put it in `<script src='operations.coffee' type='text/coffeescript'>`,  
-then use a 'coffee-script.js' script to run it, just like I did,  
-read the source of `index.html` for more detail.  
+then use a 'coffee-script.js' script to invoke, just like what I did,  
+you can read the source of `index.html` for more detail.  
 
 or, use coffee to compile it, for example, on Ubuntu(not sure for details):  
 
@@ -41,8 +41,8 @@ just put in `<script>` tag, you will get a `ternary` object.
 
 **methods**  
 
-`+` represents plus, so do '-', '\*', '/', '\\', '%'.  
-'@' will return to integral part os a number.  
+`+` represents plus, so do `-`, `\*`, `/`, `\\`, `%`.  
+`@` will return the integral part of a given number.  
 
     ternary['+']  1&, 1&        # returns '19&'
     ternary['-']  345&, 353&    # returns '47&'
