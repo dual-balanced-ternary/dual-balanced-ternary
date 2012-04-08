@@ -432,7 +432,7 @@ if window?
     proceed '%', str_A, str_B
   window['@'] = (str) ->
     arr = read_arr_from_str str
-    arr = run_in_arr['@'] arr
+    arr = arr.map run_in_arr['@']
     read_str_from_arr arr
   window.decimal_to_ternary = decimal_to_ternary
   window.ternary_to_decimal = ternary_to_decimal

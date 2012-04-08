@@ -18,6 +18,9 @@ run = (arr) ->
     body = body.map (x) ->
       if typeof x is 'object' then x = run x
       return x
+    console.log ''
+    if head is '@'
+      return window[head] body[0]
     body.reduce (x, y) ->
       window[head] x, y
   else throw new Error 'cannot find method:', head
@@ -56,23 +59,50 @@ write = document.getElementById 'write'
 input = document.getElementById 'input'
 
 input.focus()
-document.onkeydown = (event) ->
-  input.focus()
-  if event.keyCode is 13
-    str = input.value
-    input.value = ''
-    render str
-    return false
-  if event.keyCode is 229
-    write.innerHTML += '<span class="error">please turn off Chinese input mode<span>'
+
+history = [
+  'hello world',
+  '[+ 1& 4& [* 4& 567& [/ 45& 34&]]]',
+  '[@ 564564&]',
+  '[\\ 345& 68&]',
+  '[% 345& 68&]'
+]
+
+current = 5
+
+previous = ->
+  if current > 0
+    current -= 1
+    input.value = history[current]
+
+next = ->
+  if current < history.length - 1
+    current += 1
+    input.value = history[current]
+  if current is (history.length - 1)
+    current += 1
+    input.value = '[]'
+    input.selectionStart = 1
+    input.selectionEnd = 1
 
 input.onkeydown = (event) ->
   code = event.keyCode
   console.log code
   pos = input.selectionStart
   str = input.value
+  if event.keyCode is 13
+    str = input.value
+    history.push str
+    current += 1
+    input.value = '[]'
+    input.selectionStart = 1
+    input.selectionEnd = 1
+    render str
+    return false
+  if event.keyCode is 229
+    write.innerHTML += '<span class="error">please turn off Chinese input mode<span>'
   if code is 219
-    str = str[..pos] + '[]' + str[pos+1..]
+    str = str[...pos] + '[]' + str[pos..]
     input.value = str
     input.selectionStart = pos + 1
     input.selectionEnd = pos + 1
@@ -112,6 +142,13 @@ input.onkeydown = (event) ->
     input.selectionStart = pos
     input.selectionEnd = pos
     return false
+  if code is 191
+    str = str[...pos] + '/ ' + str[pos..]
+    input.value = str
+    pos += 2
+    input.selectionStart = pos
+    input.selectionEnd = pos
+    return false
   if code is 53 and event.shiftKey
     str = str[...pos] + '% ' + str[pos..]
     input.value = str
@@ -144,3 +181,5 @@ input.onkeydown = (event) ->
       input.selectionStart = pos
       input.selectionEnd = pos
       return false
+  if code is 38 then do previous
+  if code is 40 then do next
