@@ -13,16 +13,16 @@ parse = (arr) ->
 run = (arr) ->
   head = arr[0]
   body = arr[1..]
-  if window[head]?
+  if ternary[head]?
     console.log body
     body = body.map (x) ->
       if typeof x is 'object' then x = run x
       return x
     console.log ''
     if head is '@'
-      return window[head] body[0]
+      return ternary[head] body[0]
     body.reduce (x, y) ->
-      window[head] x, y
+      ternary[head] x, y
   else throw new Error 'cannot find method:', head
 
 fold_str = (arr) ->
@@ -135,7 +135,7 @@ input.onkeydown = (event) ->
     input.selectionStart = pos
     input.selectionEnd = pos
     return false
-  if code is 189 and event.shiftKey
+  if code is 189
     str = str[...pos] + '- ' + str[pos..]
     input.value = str
     pos += 2

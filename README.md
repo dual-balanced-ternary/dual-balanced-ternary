@@ -1,14 +1,64 @@
 
-removed previous version of calculator, try to rebuild it.  
-
-about  
+Double balanced ternary calculator  
 --
 
-Double-Blanced-Ternary is a mapping of complex numbers.  
-I want to bild a tiny calculator for it.  
+**explanation**  
 
-plan  
+it's more or less a wrapper of complex numbers, that's all  
+jump my shoddy English docs if reads Chinese...  
+visiting the live version is a good idea, hope it won't crash:  
+<http://docview.cnodejs.net/projects/ternary/ternary-calculator/index.html?html>  
+
+the `&` mark in number is nessesary, `&` even represents '5&5'.  
+calculator takes input string in somthing like S-exression wrapped with '[]'.  
+or you may import the methods to a script and then run it.  
+I didn't test the methods throughly, but seems fine by now.  
+
+usage  
 --
 
-make it simpler, and cleaner to read. remove the useless part.  
-then port it to a REPL in a web page.
+I wrote it on CoffeeScript, you kown that if you have written coffee..  
+`ternary = require './operations'`,
+or put it in `<script src='operations.coffee' type='text/coffeescript'>`,  
+then use a 'coffee-script.js' script to run it, just like I did,  
+read the source of `index.html` for more detail.  
+
+or, use coffee to compile it, for example, on Ubuntu(not sure for details):  
+
+    $ sudo aptitude install nodejs npm -y
+    $ sudo npm install coffee-script -g
+    $ git clone git@github.com:jiyinyiyong/ternary-calculator.git
+    $ cd ternary-calculator/
+    $ coffee -bc operations.coffee # will get a js file
+
+**in Node**  
+
+using `var ternary = requrie('./operations');` to load it,  
+
+**in browser**
+
+just put in `<script>` tag, you will get a `ternary` object.  
+
+**methods**  
+
+`+` represents plus, so do '-', '\*', '/', '\\', '%'.  
+'@' will return to integral part os a number.  
+
+    ternary['+']  1&, 1&        # returns '19&'
+    ternary['-']  345&, 353&    # returns '47&'
+    ternary['*']  4&4, 3&47     # returns '74&968'
+    ternary['/']  74&968, 4&4   # returns '3&47'
+    ternary['\\'] 74&968, 4&4   # returns '3&'
+    ternary['%']  74&968, 4&4   # returns '7&368'
+    ternary['@']  74&968        # returns '74&'
+
+    ternary.decimal_to_ternary -9.296296296296298, 37.2962962962963
+    # returns '3453&456544656564654...'
+    ternary.ternary_to_decimal 3453&456
+    # returns [ -9.296296296296298, 37.2962962962963 ]
+
+中文部分  
+--
+
+实在不知道怎么写才好.. 双平衡三进制, 牵强附会比较多  
+哪天能派上用场再说吧, 我期待是平面图形上能用, 再说

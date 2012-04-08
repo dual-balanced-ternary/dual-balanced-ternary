@@ -343,8 +343,9 @@ decimal_to_ternary = (x, y) ->
     base = proceed '/', '1&', '151&'
     while fra_arr.length > 0
       number = decimal_ternary_map[fra_arr.shift()]
-      number = proceed '+', number, ternary_x
+      number = proceed '*', number, base
       ternary_x = proceed '+', number, ternary_x
+      base = proceed '/', base, '151&'
   else error 'bad x number string'
   find_y = y.match /^(\d+)(\.(\d+))?$/
   if find_y?
@@ -360,7 +361,7 @@ decimal_to_ternary = (x, y) ->
     base = proceed '/', '1&', '151&'
     while fra_arr.length > 0
       number = decimal_ternary_map[fra_arr.shift()]
-      number = proceed '+', number, ternary_y
+      number = proceed '*', number, base
       ternary_y = proceed '+', number, ternary_y
       base = proceed '/', base, '151&'
   else error 'bad y number string'
@@ -418,21 +419,22 @@ if exports?
   exports.ternary_to_decimal = ternary_to_decimal
 
 if window?
-  window['+'] = (str_A, str_B) ->
+  window.ternary = {}
+  ternary['+'] = (str_A, str_B) ->
     proceed '+', str_A, str_B
-  window['-'] = (str_A, str_B) ->
+  ternary['-'] = (str_A, str_B) ->
     proceed '-', str_A, str_B
-  window['*'] = (str_A, str_B) ->
+  ternary['*'] = (str_A, str_B) ->
     proceed '*', str_A, str_B
-  window['/'] = (str_A, str_B) ->
+  ternary['/'] = (str_A, str_B) ->
     proceed '/', str_A, str_B
-  window['\\'] = (str_A, str_B) ->
+  ternary['\\'] = (str_A, str_B) ->
     proceed '\\', str_A, str_B
-  window['%'] = (str_A, str_B) ->
+  ternary['%'] = (str_A, str_B) ->
     proceed '%', str_A, str_B
-  window['@'] = (str) ->
+  ternary['@'] = (str) ->
     arr = read_arr_from_str str
     arr = arr.map run_in_arr['@']
     read_str_from_arr arr
-  window.decimal_to_ternary = decimal_to_ternary
-  window.ternary_to_decimal = ternary_to_decimal
+  ternary.decimal_to_ternary = decimal_to_ternary
+  ternary.ternary_to_decimal = ternary_to_decimal
