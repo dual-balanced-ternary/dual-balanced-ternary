@@ -2,9 +2,9 @@
 parse = (arr) ->
   do recurse = ->
     head = do arr.shift
-    if head is '('
+    if head is '['
       in_brackets = []
-      in_brackets.push do recurse until arr[0] is ')'
+      in_brackets.push do recurse until arr[0] is ']'
       do arr.shift
       return in_brackets
     else
@@ -22,16 +22,30 @@ run = (arr) ->
       window[head] x, y
   else throw new Error 'cannot find method:', head
 
+fold_str = (arr) ->
+  console.log 'while:', arr
+  arr = arr.map (x) ->
+    if typeof x is 'object'
+      return fold_str x
+    else return x
+  "[#{arr.join ' '}]"
+
 render = (str) ->
   try
     type = 'result'
     arr = str
-      .replace(/\(/g, ' ( ')
-      .replace(/\)/g, ' ) ')
+      .replace(/\[/g, ' [ ')
+      .replace(/\]/g, ' ] ')
       .split(' ')
       .filter((x) ->
         if x isnt '' then true else false)
-    msg = run (parse arr)
+    console.log 'arr:', arr
+    fold = parse arr
+    console.log 'fold:', fold
+    array_str = fold_str fold
+    console.log 'array_str:', array_str
+    write.innerHTML += "<span class='array'>got array:#{array_str}</span><br>"
+    msg = run fold
   catch error
     type = 'error'
     msg = error.message
@@ -49,3 +63,84 @@ document.onkeydown = (event) ->
     input.value = ''
     render str
     return false
+  if event.keyCode is 229
+    write.innerHTML += '<span class="error">please turn off Chinese input mode<span>'
+
+input.onkeydown = (event) ->
+  code = event.keyCode
+  console.log code
+  pos = input.selectionStart
+  str = input.value
+  if code is 219
+    str = str[..pos] + '[]' + str[pos+1..]
+    input.value = str
+    input.selectionStart = pos + 1
+    input.selectionEnd = pos + 1
+    return false
+  if code is 221
+    if str[pos] is ']'
+      pos += 1
+      input.selectionStart = pos
+      input.selectionEnd = pos
+      return false
+  if code is 8
+    if str[pos-1..pos] is '[]'
+      str = str[...pos-1] + str[pos+1..]
+      input.value = str
+      pos -= 1
+      input.selectionStart = pos
+      input.selectionEnd = pos
+      return false
+  if code is 56 and event.shiftKey
+    str = str[...pos] + '* ' + str[pos..]
+    input.value = str
+    pos += 2
+    input.selectionStart = pos
+    input.selectionEnd = pos
+    return false
+  if code is 187 and event.shiftKey
+    str = str[...pos] + '+ ' + str[pos..]
+    input.value = str
+    pos += 2
+    input.selectionStart = pos
+    input.selectionEnd = pos
+    return false
+  if code is 189 and event.shiftKey
+    str = str[...pos] + '- ' + str[pos..]
+    input.value = str
+    pos += 2
+    input.selectionStart = pos
+    input.selectionEnd = pos
+    return false
+  if code is 53 and event.shiftKey
+    str = str[...pos] + '% ' + str[pos..]
+    input.value = str
+    pos += 2
+    input.selectionStart = pos
+    input.selectionEnd = pos
+    return false
+  if code is 50 and event.shiftKey
+    str = str[...pos] + '@ ' + str[pos..]
+    input.value = str
+    pos += 2
+    input.selectionStart = pos
+    input.selectionEnd = pos
+    return false
+  if code is 220
+    str = str[...pos] + '\\ ' + str[pos..]
+    input.value = str
+    pos += 2
+    input.selectionStart = pos
+    input.selectionEnd = pos
+    return false
+  if code is 32
+    front = str[...pos]
+    find_number = front.match /\s([1-9]+)$/
+    console.log front, find_number
+    if find_number?
+      str = front + '& ' + str[pos..]
+      input.value = str
+      pos += 2
+      input.selectionStart = pos
+      input.selectionEnd = pos
+      return false
