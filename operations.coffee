@@ -398,43 +398,20 @@ ternary_to_decimal = (ternary_str) ->
 # echo decimal_to_ternary a, b
 
 # export ads libs
-if exports?
-  exports['+'] = (str_A, str_B) ->
-    proceed '+', str_A, str_B
-  exports['-'] = (str_A, str_B) ->
-    proceed '-', str_A, str_B
-  exports['*'] = (str_A, str_B) ->
-    proceed '*', str_A, str_B
-  exports['/'] = (str_A, str_B) ->
-    proceed '/', str_A, str_B
-  exports['\\'] = (str_A, str_B) ->
-    proceed '\\', str_A, str_B
-  exports['%'] = (str_A, str_B) ->
-    proceed '%', str_A, str_B
-  exports['@'] = (str) ->
-    arr = read_arr_from_str str
-    arr = arr.map run_in_arr['@']
-    read_str_from_arr arr
-  exports.decimal_to_ternary = decimal_to_ternary
-  exports.ternary_to_decimal = ternary_to_decimal
 
-if window?
-  window.ternary = {}
-  ternary['+'] = (str_A, str_B) ->
-    proceed '+', str_A, str_B
-  ternary['-'] = (str_A, str_B) ->
-    proceed '-', str_A, str_B
-  ternary['*'] = (str_A, str_B) ->
-    proceed '*', str_A, str_B
-  ternary['/'] = (str_A, str_B) ->
-    proceed '/', str_A, str_B
-  ternary['\\'] = (str_A, str_B) ->
-    proceed '\\', str_A, str_B
-  ternary['%'] = (str_A, str_B) ->
-    proceed '%', str_A, str_B
-  ternary['@'] = (str) ->
+export_obj =
+  '+': (str_A, str_B) -> proceed '+', str_A, str_B
+  '-': (str_A, str_B) -> proceed '-', str_A, str_B
+  '*': (str_A, str_B) -> proceed '*', str_A, str_B
+  '/': (str_A, str_B) -> proceed '/', str_A, str_B
+  '\\':(str_A, str_B) -> proceed '\\', str_A, str_B
+  '%': (str_A, str_B) -> proceed '%', str_A, str_B
+  '@': (str) ->
     arr = read_arr_from_str str
     arr = arr.map run_in_arr['@']
     read_str_from_arr arr
-  ternary.decimal_to_ternary = decimal_to_ternary
-  ternary.ternary_to_decimal = ternary_to_decimal
+  decimal_to_ternary: decimal_to_ternary
+  ternary_to_decimal: ternary_to_decimal
+
+exports = export_obj if exports?
+window.ternary = export_obj if window?
