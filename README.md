@@ -1,5 +1,5 @@
 
-Dual balanced ternary calculator
+Dual Balanced Ternary Calculator
 ------
 
 ### explanation
@@ -21,26 +21,31 @@ Instead of `1 0 -1` in Balanced Ternary, Dual Balanced Ternary uses digits like 
 npm install --save dual-balanced-ternary
 ```
 
-```coffee
-ops = require 'dual-balanced-ternary'
-ops.add '1&', '1&' # => '19&'
-```
-
 `+` represents plus, so do `-`, `\*`, `/`, `\\`, `%`.  
 `@` will return the integral part of a given number.  
 
 ```coffee
-ternary['+']  1&, 1&        # returns '19&'
-ternary['-']  345&, 353&    # returns '47&'
-ternary['*']  4&4, 3&47     # returns '74&968'
-ternary['/']  74&968, 4&4   # returns '3&47'
-ternary['\\'] 74&968, 4&4   # returns '3&'
-ternary['%']  74&968, 4&4   # returns '7&368'
-ternary['@']  74&968        # returns '74&'
+ops = require 'dual-balanced-ternary'
+ops.add '1&', '1&'
+# => '19&'
+ops.add '1&', '1&'
+# => '19&'
+ops.subtract '345&', '353&'
+# => '47&'
+ops..multiply '4&4', '3&47'
+# => '74&968'
+ops.divide '74&968', '4&4'
+# => '3&47'
+ops.aliquot '74&968', '4&4'
+# => '3&'
+ops.modular '74&968', '4&4'
+# => '7&368'
+ops.integer '74&968'
+# => '74&'
 
 ternary.decimal_to_ternary -9.296296296296298, 37.2962962962963
 # returns '3453&456544656564654...'
-ternary.ternary_to_decimal 3453&456
+ternary.ternary_to_decimal '3453&456'
 # returns [ -9.296296296296298, 37.2962962962963 ]
 ```
 

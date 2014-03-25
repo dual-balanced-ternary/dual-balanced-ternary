@@ -412,7 +412,7 @@ module.exports =
   '\\': (str_A, str_B) -> proceed '\\', str_A, str_B
   modular: (str_A, str_B) -> proceed '%', str_A, str_B
   '%': (str_A, str_B) -> proceed '%', str_A, str_B
-  integar: (str) ->
+  integer: (str) ->
     arr = read_arr_from_str str
     arr = arr.map run_in_arr['@']
     read_str_from_arr arr

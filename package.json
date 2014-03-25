@@ -1,7 +1,7 @@
 {
   "name": "dual-balanced-ternary",
   "version": "0.0.1",
-  "description": "Double balanced ternary calculator   --",
+  "description": "Dual Balanced Ternary Calculator",
   "main": "js/operations.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
