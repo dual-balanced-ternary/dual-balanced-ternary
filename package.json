@@ -1,0 +1,27 @@
+{
+  "name": "dual-balanced-ternary",
+  "version": "0.0.1",
+  "description": "Double balanced ternary calculator   --",
+  "main": "js/operations.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jiyinyiyong/dual-balanced-ternary.git"
+  },
+  "keywords": [
+    "dual-balanced-ternary"
+  ],
+  "author": "jiyinyiyong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jiyinyiyong/dual-balanced-ternary/issues"
+  },
+  "homepage": "https://github.com/jiyinyiyong/dual-balanced-ternary",
+  "devDependencies": {
+    "devtools-reloader-station": "0.0.3",
+    "cirru-html": "~0.1.5",
+    "shelljs": "~0.2.6"
+  }
+}

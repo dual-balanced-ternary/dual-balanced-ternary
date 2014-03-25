@@ -399,19 +399,26 @@ ternary_to_decimal = (ternary_str) ->
 
 # export ads libs
 
-export_obj =
+module.exports =
+  add: (str_A, str_B) -> proceed '+', str_A, str_B
   '+': (str_A, str_B) -> proceed '+', str_A, str_B
+  subtract: (str_A, str_B) -> proceed '-', str_A, str_B
   '-': (str_A, str_B) -> proceed '-', str_A, str_B
+  multiply: (str_A, str_B) -> proceed '*', str_A, str_B
   '*': (str_A, str_B) -> proceed '*', str_A, str_B
+  divide: (str_A, str_B) -> proceed '/', str_A, str_B
   '/': (str_A, str_B) -> proceed '/', str_A, str_B
-  '\\':(str_A, str_B) -> proceed '\\', str_A, str_B
+  aliquot: (str_A, str_B) -> proceed '\\', str_A, str_B
+  '\\': (str_A, str_B) -> proceed '\\', str_A, str_B
+  modular: (str_A, str_B) -> proceed '%', str_A, str_B
   '%': (str_A, str_B) -> proceed '%', str_A, str_B
+  integar: (str) ->
+    arr = read_arr_from_str str
+    arr = arr.map run_in_arr['@']
+    read_str_from_arr arr
   '@': (str) ->
     arr = read_arr_from_str str
     arr = arr.map run_in_arr['@']
     read_str_from_arr arr
   decimal_to_ternary: decimal_to_ternary
   ternary_to_decimal: ternary_to_decimal
-
-exports = export_obj if exports?
-window.ternary = export_obj if window?

@@ -1,50 +1,49 @@
 
-Double balanced ternary calculator  
---
+Dual balanced ternary calculator
+------
 
-**explanation**  
+### explanation
 
-jump my shoddy English docs if reads Chinese...  
-it's more or less a wrapper of complex numbers, that's all about it  
-visiting the live version is a good idea, hope it won't crash:  
-<http://jiyinyiyong.github.com/ternary-calculator/index.html>  
+"Dual Balanced Ternary" is an extend version of "Balanced Ternary" for 2d plane.
+It uses digits from `1` to `9` to represent each number, and `&` for `.`.
 
-the `&` mark in a number is nessesary, `&` also represents '5&5'.  
-the calculator takes in string in a string in S-exression but wrapped with '[]'.  
-or you may import the methods in a script and then run it.  
-I didn't test the methods throughly, but seems fine by now.  
+Instead of `1 0 -1` in Balanced Ternary, Dual Balanced Ternary uses digits like this:
 
-usage  
---
+```
+  6  1  8
+  7  5  3
+  2  9  4
+```
 
-**in Node**  
+### Usage
 
-using `var ternary = requrie('./operations');` to load it,  
+```
+npm install --save dual-balanced-ternary
+```
 
-**in browser**
-
-just put in `<script>` tag, you will get a `ternary` object.  
-
-**methods**  
+```coffee
+ops = require 'dual-balanced-ternary'
+ops.add '1&', '1&' # => '19&'
+```
 
 `+` represents plus, so do `-`, `\*`, `/`, `\\`, `%`.  
 `@` will return the integral part of a given number.  
 
-    ternary['+']  1&, 1&        # returns '19&'
-    ternary['-']  345&, 353&    # returns '47&'
-    ternary['*']  4&4, 3&47     # returns '74&968'
-    ternary['/']  74&968, 4&4   # returns '3&47'
-    ternary['\\'] 74&968, 4&4   # returns '3&'
-    ternary['%']  74&968, 4&4   # returns '7&368'
-    ternary['@']  74&968        # returns '74&'
+```coffee
+ternary['+']  1&, 1&        # returns '19&'
+ternary['-']  345&, 353&    # returns '47&'
+ternary['*']  4&4, 3&47     # returns '74&968'
+ternary['/']  74&968, 4&4   # returns '3&47'
+ternary['\\'] 74&968, 4&4   # returns '3&'
+ternary['%']  74&968, 4&4   # returns '7&368'
+ternary['@']  74&968        # returns '74&'
 
-    ternary.decimal_to_ternary -9.296296296296298, 37.2962962962963
-    # returns '3453&456544656564654...'
-    ternary.ternary_to_decimal 3453&456
-    # returns [ -9.296296296296298, 37.2962962962963 ]
+ternary.decimal_to_ternary -9.296296296296298, 37.2962962962963
+# returns '3453&456544656564654...'
+ternary.ternary_to_decimal 3453&456
+# returns [ -9.296296296296298, 37.2962962962963 ]
+```
 
-中文部分  
---
+### License
 
-实在不知道怎么写才好.. 双平衡三进制, 牵强附会比较多  
-哪天能派上用场再说吧, 我期待是平面图形上能用, 再说
+MIT
